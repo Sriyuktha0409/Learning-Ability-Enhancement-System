@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Recall Test</title>
+    <link rel="stylesheet" href="word_recall.css">
+</head>
+<body>
+
+    <h1>Word Recall Test</h1><br><br>
+
+    <!-- Difficulty Selection -->
+    <div id="difficulty-selection">
+        <button onclick="selectDifficulty('easy')">Easy</button>
+        <button onclick="selectDifficulty('medium')">Medium</button>
+        <button onclick="selectDifficulty('hard')">Difficult</button>
+    </div>
+
+    <!-- Game Section (Initially Hidden) -->
+    <div id="game-section" style="display: none;">
+        <h2 id="level-title"></h2>
+        <p id="word-list"></p>
+        <div id="user-inputs"></div>
+
+        <button id="start-button" onclick="startTest()">Start Test</button>
+        <button id="recall-button" onclick="startRecallPhase()" style="display: none;">Recall Words</button>
+        <button id="submit-button" onclick="checkRecall()" style="display: none;">Submit</button>
+        <button id="next-button" onclick="nextLevel()" style="display: none;">Next Level</button>
+        <button id="retry-button" onclick="retryLevel()" style="display: none;">Retry</button>
+
+        <p id="result"></p>
+    </div>
+
+    <!-- Back to Home -->
+    <a href="index.html" class="back-link">Back to Home</a>
+
+    <script src="word_recall.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+/* MemoryTest.css */
+.memory-test-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 2rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.memory-test-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.memory-test-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #4361ee, #3a0ca3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.memory-test-description {
+    font-size: 1.2rem;
+    color: #6c757d;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.memory-test-iframe-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 1rem;
+}
+
+.memory-test-iframe {
+    border: none;
+    border-radius: 8px;
+    flex: 1;
+    min-height: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .memory-test-container {
+        padding: 1rem;
+    }
+    
+    .memory-test-title {
+        font-size: 2rem;
+    }
+    
+    .memory-test-description {
+        font-size: 1rem;
+    }
+    
+    .memory-test-iframe-container {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .memory-test-title {
+        font-size: 1.8rem;
+    }
+    
+    .memory-test-iframe {
+        min-height: 500px;
+    }
+}

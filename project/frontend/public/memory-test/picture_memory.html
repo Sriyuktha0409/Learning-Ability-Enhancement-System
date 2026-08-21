@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Picture Memory Game</title>
+    <link rel="stylesheet" href="picture_memory.css">
+</head>
+<body>
+    <h1>Picture Memory Game</h1>
+    <p>Match all the pairs to complete the level!</p>
+
+    <div id="menu">
+        <h2>Select Difficulty</h2>
+        <button onclick="selectCategory('easy')">Easy</button>
+        <button onclick="selectCategory('medium')">Medium</button>
+        <button onclick="selectCategory('hard')">Hard</button>
+    </div>
+
+    <div id="level-menu" style="display: none;">
+        <h2>Select Level</h2>
+        <button onclick="startGame(1)">Level 1</button>
+        <button onclick="startGame(2)">Level 2</button>
+        <button onclick="startGame(3)">Level 3</button>
+        <button onclick="startGame(4)">Level 4</button>
+        <button onclick="startGame(5)">Level 5</button>
+    </div>
+
+    <div id="game-section" style="display: none;">
+        <h2 id="level-number"></h2>
+        <p id="timer">Time: 0s</p>
+        <div id="game-container">
+            <div id="game-board"></div>
+        </div>
+        <div id="game-controls">
+            <button id="retry-btn" style="display: none;" onclick="restartGame()">Retry</button>  
+            <button id="next-level" style="display: none;" onclick="nextLevel()">Next Level</button>
+        </div>
+    </div>
+
+    <script src="picture_memory.js"></script>
+</body>
+</html>

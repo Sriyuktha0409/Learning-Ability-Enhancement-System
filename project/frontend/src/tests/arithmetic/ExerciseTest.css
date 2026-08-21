@@ -1,0 +1,107 @@
+/* General container styling */
+.exercise-container {
+    text-align: center;
+    padding: 30px;
+    font-family: "Poppins", sans-serif;
+    background-color: #f7f7f7; /* Soft grayish-white background */
+}
+
+/* Question box styling */
+.question-box {
+    background: linear-gradient(135deg, #7ec8e3, #a2d5f2); /* Soft Blue Gradient */
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    width: 60%;
+    color: #333;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Input field styling */
+input {
+    width: 60%;
+    padding: 12px;
+    margin-top: 15px;
+    font-size: 18px;
+    border: 2px solid #5da3fa;
+    border-radius: 8px;
+    text-align: center;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+}
+
+/* Buttons styling */
+.button-group {
+    margin-top: 25px;
+}
+
+.next-btn, .submit-btn {
+    margin: 12px;
+    padding: 12px 25px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Next button - Soft Blue */
+.next-btn {
+    background-color: #5da3fa;
+    color: white;
+}
+
+.next-btn:hover {
+    background-color: #4a90e2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(93, 163, 250, 0.5);
+}
+
+/* Submit button - Soft Green */
+.submit-btn {
+    background-color: #6fd39b;
+    color: white;
+}
+
+.submit-btn:hover {
+    background-color: #5bbd86;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(111, 211, 155, 0.5);
+}
+
+/* Result box styling */
+.result-box {
+    background: linear-gradient(135deg, #ffc3a0, #ffafbd); /* Soft Peach Gradient */
+    padding: 25px;
+    border-radius: 15px;
+    width: 60%;
+    margin: auto;
+    color: #333;
+    font-size: 22px;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Score styling */
+.result-box h2 {
+    font-size: 28px;
+    color: #ff7043; /* Warm Orange */
+}
+
+/* Correct Answers list */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}

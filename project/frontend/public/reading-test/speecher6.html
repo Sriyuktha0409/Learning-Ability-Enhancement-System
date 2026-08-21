@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Test</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            background-color: #f5f7fa;
+            color: #2d3748;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 90%;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #2b6cb0;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .level-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .level-box {
+            padding: 18px 24px;
+            font-size: 20px;
+            font-weight: 600;
+            background: #4299e1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .level-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: #3182ce;
+        }
+
+        .level-box.locked {
+            display: none;
+        }
+
+        #questionCounter {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .sentence {
+            font-size: 26px;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f7fafc;
+            border-radius: 12px;
+            border-left: 5px solid #4299e1;
+            line-height: 1.6;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .correct {
+            color: #38a169;
+            font-weight: 600;
+        }
+
+        .wrong {
+            color: #e53e3e;
+            text-decoration: underline;
+        }
+
+        .button {
+            padding: 14px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            background: #4299e1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 10px 5px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: #3182ce;
+        }
+
+        .button.secondary {
+            background: #e53e3e;
+        }
+
+        .button.secondary:hover {
+            background: #c53030;
+        }
+
+        .button.tertiary {
+            background: #38a169;
+        }
+
+        .button.tertiary:hover {
+            background: #2f855a;
+        }
+
+        #recognizedText {
+            font-size: 20px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f7fafc;
+            border-radius: 8px;
+            min-height: 30px;
+            border-left: 3px solid #a0aec0;
+        }
+
+        #scoreDisplay {
+            font-size: 22px;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4299e1;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .listening-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-color: #e53e3e;
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: pulse 1.5s infinite;
+            vertical-align: middle;
+        }
+
+        .corrections-container {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .correction-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .correction-text {
+            flex-grow: 1;
+        }
+
+        .play-correction {
+            background: #38a169;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .sentence {
+                font-size: 22px;
+                padding: 15px;
+            }
+            
+            .button {
+                padding: 12px 20px;
+                font-size: 16px;
+                width: 100%;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="levelSelection">
+        <h2>📖 Reading Test</h2>
+        <p>Select your difficulty level:</p>
+        
+        <div class="level-container">
+            <div class="level-box" id="easyLevel" onclick="startLevel('easy')">
+                Easy Level
+            </div>
+            <div class="level-box locked" id="mediumLevel" onclick="startLevel('medium')">
+                Medium Level
+            </div>
+            <div class="level-box locked" id="hardLevel" onclick="startLevel('hard')">
+                Hard Level
+            </div>
+        </div>
+    </div>
+
+    <div class="container hidden" id="gameContainer">
+        <h2 id="gameTitle">Easy Level</h2>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p id="questionCounter">Sentence 1 of 10</p>
+        <p id="sentenceDisplay" class="sentence"></p>
+        
+        <div id="recognizedText">Waiting for your speech...</div>
+        
+        <div id="feedback" class="hidden"></div>
+        
+        <div class="button-container">
+            <button id="startSpeaking" class="button" onclick="startSpeechRecognition()">
+                🎤 Start Speaking
+                <span id="listeningIndicator" class="listening-indicator hidden"></span>
+            </button>
+            <button id="skipButton" class="button secondary" onclick="nextSentence()">⏭ Skip Sentence</button>
+            <button class="button tertiary" onclick="returnToLevels()">← Back to Levels</button>
+        </div>
+    </div>
+
+    <div class="container hidden" id="scoreContainer">
+        <h2 id="scoreTitle">Easy Level Results</h2>
+        <p id="scoreDisplay"></p>
+        
+        <div id="correctionsSection" class="corrections-container hidden">
+            <h3>Practice these sentences:</h3>
+            <div id="correctionsList"></div>
+        </div>
+        
+        <div class="button-container">
+            <button id="replayAudio" class="button" onclick="playAllCorrections()">🔊 Listen to All Corrections</button>
+            <button id="retryTest" class="button secondary" onclick="retryLevel()">🔄 Retry Level</button>
+            <button id="goToExercise" class="button tertiary hidden" onclick="window.location.href='speecher.html'">📚 Go to Exercises</button>
+            <button class="button" onclick="returnToLevels()">🏠 Return to Levels</button>
+        </div>
+    </div>
+
+    <script>
+        const allSentences = {
+            easy: [
+            "Water is essential for life.", "She goes to school every day.", "We should eat healthy food.", "The sky looks beautiful in the morning.", "My father is very hardworking.",
+            "The stars twinkle at night.", "We play football in the evening.", "The teacher explains the lesson well.", "I love watching cartoons.", "Birds build nests in trees.",
+            "The sun gives us energy.", "My mother makes delicious food.", "Rainbows appear after it rains.", "The cat is sleeping under the table.", "My grandfather tells me stories.",
+            "We celebrate festivals with joy.", "A train moves on tracks.", "The ice cream is very tasty.", "The clock shows the correct time.", "We should always help the needy.",
+            "The bus stops at every station.", "The cow gives us milk.", "The trees give us shade.", "A river flows into the sea.", "My sister loves playing the piano."
+            ],
+            medium: [
+            "The Earth revolves around the Sun.", "We should take care of our environment.", "Gravity keeps us on the ground.", "The invention of the wheel changed human civilization.", "The digestive system helps in breaking down food.",
+            "The human brain has different parts controlling various functions.", "Electricity is used to power homes and industries.", "The Industrial Revolution changed the way goods were produced.", "Recycling helps reduce waste.", "Plants release oxygen through photosynthesis.",
+            "The water cycle is important for maintaining life.", "The moonlight reflects sunlight.", "A thermometer measures temperature.", "Sound travels in waves.", "The respiratory system helps us breathe.",
+            "The circulatory system consists of the heart, blood, and blood vessels.", "Pollution affects the environment.", "Simple machines make work easier.", "Tectonic plates move under the Earth's surface.", "Renewable energy is important for sustainability.",
+            "The nervous system controls our actions.", "A volcano erupts due to magma from inside the Earth.", "Clouds are made of tiny water droplets.", "The planets orbit the Sun.", "The Earth's atmosphere protects us from harmful radiation."
+      
+            ],
+            hard: [
+            "Newton's laws of motion explain how objects move in space.", "The Renaissance was a period of great cultural change in Europe.", "The theory of evolution explains how species change over time.", "Climate change is caused by an increase in greenhouse gases.", "Einstein developed the theory of relativity.",
+      "The solar system consists of the Sun and eight planets.", "Ocean currents influence weather patterns.", "Black holes are regions of space where gravity is extremely strong.", "The greenhouse effect causes global warming.", "Deforestation affects biodiversity.",
+      "Microorganisms play an important role in the ecosystem.", "The water table is the level below which the ground is saturated with water.", "The ozone layer protects us from ultraviolet rays.", "Electromagnetic waves have different wavelengths.", "Photosynthesis is a process used by plants to convert light into energy.",
+      "The Earth's core is extremely hot.", "Artificial satellites help in communication and weather forecasting.", "Tsunamis are caused by underwater earthquakes.", "Rocks are classified into igneous, sedimentary, and metamorphic.", "Genetics is the study of heredity.",
+      "The speed of light is approximately 299,792 kilometers per second.", "The human body has over 200 bones.", "The food chain shows how energy flows in an ecosystem.", "Seismology is the study of earthquakes.", "The universe is vast and constantly expanding."
+            ]
+        };
+
+        let currentLevel = "easy";
+        let sentences = [];
+        let currentSentenceIndex = 0;
+        let correctSentences = 0;
+        let recognition = null;
+        let testCompleted = false;
+        let incorrectSentences = [];
+
+        // Initialize the game
+        function initializeGame() {
+            // Only show Easy level initially
+            document.getElementById('mediumLevel').classList.add('locked');
+            document.getElementById('hardLevel').classList.add('locked');
+            initializeSpeechRecognition();
+        }
+
+        function startLevel(level) {
+            currentLevel = level;
+            sentences = allSentences[level].sort(() => 0.5 - Math.random()).slice(0, 10);
+            currentSentenceIndex = 0;
+            correctSentences = 0;
+            testCompleted = false;
+            incorrectSentences = [];
+            
+            // Update UI
+            document.getElementById("levelSelection").classList.add("hidden");
+            document.getElementById("gameContainer").classList.remove("hidden");
+            document.getElementById("scoreContainer").classList.add("hidden");
+            document.getElementById("progressBar").style.width = '0%';
+            document.getElementById("feedback").classList.add("hidden");
+            document.getElementById("gameTitle").innerText = `${level.charAt(0).toUpperCase() + level.slice(1)} Level`;
+            document.getElementById("goToExercise").classList.add("hidden");
+            
+            displaySentence();
+        }
+
+        function initializeSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Speech recognition not supported in your browser. Try Chrome or Edge.");
+                return false;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.continuous = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = function() {
+                document.getElementById("recognizedText").innerText = "Listening...";
+                document.getElementById("listeningIndicator").classList.remove("hidden");
+                document.getElementById("startSpeaking").disabled = true;
+            };
+
+            recognition.onresult = function(event) {
+                if (event.results[0].isFinal) {
+                    processSpeech(event.results[0][0].transcript);
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Recognition error:", event.error);
+                document.getElementById("recognizedText").innerText = 
+                    "Error: " + event.error + ". Try again.";
+                resetSpeechUI();
+            };
+
+            recognition.onend = function() {
+                resetSpeechUI();
+            };
+
+            return true;
+        }
+
+        function resetSpeechUI() {
+            document.getElementById("listeningIndicator").classList.add("hidden");
+            if (!testCompleted) {
+                document.getElementById("startSpeaking").disabled = false;
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentSentenceIndex) / sentences.length) * 100;
+            document.getElementById("progressBar").style.width = `${progress}%`;
+        }
+
+        function displaySentence() {
+            document.getElementById("sentenceDisplay").innerText = sentences[currentSentenceIndex];
+            document.getElementById("recognizedText").innerText = "Waiting for your speech...";
+            document.getElementById("questionCounter").innerText = `Sentence ${currentSentenceIndex + 1} of ${sentences.length}`;
+            updateProgress();
+        }
+
+        function normalizeText(text) {
+            return text.toLowerCase().replace(/[.,!?]/g, '').trim();
+        }
+
+        function startSpeechRecognition() {
+            if (!recognition) {
+                if (!initializeSpeechRecognition()) {
+                    return;
+                }
+            }
+            recognition.start();
+        }
+
+        function processSpeech(spokenText) {
+            const displayTextElement = document.getElementById("sentenceDisplay");
+            const output = document.getElementById("recognizedText");
+            const feedbackElement = document.getElementById("feedback");
+            const originalText = normalizeText(displayTextElement.innerText);
+            const currentSentence = sentences[currentSentenceIndex];
+            
+            spokenText = normalizeText(spokenText);
+            output.innerText = spokenText;
+            
+            const isCorrect = originalText === spokenText;
+            
+            if (isCorrect) {
+                correctSentences++;
+                displayTextElement.innerHTML = `<span class='correct'>${currentSentence}</span>`;
+                feedbackElement.textContent = "✅ Correct!";
+                feedbackElement.className = "correct";
+            } else {
+                displayTextElement.innerHTML = `<span class='wrong'>${currentSentence}</span>`;
+                feedbackElement.textContent = "❌ Try again!";
+                feedbackElement.className = "wrong";
+                incorrectSentences.push(currentSentence);
+            }
+            
+            feedbackElement.classList.remove("hidden");
+
+            // Move to the next sentence after a short delay
+            setTimeout(() => {
+                currentSentenceIndex++;
+                if (currentSentenceIndex < sentences.length) {
+                    displaySentence();
+                    feedbackElement.classList.add("hidden");
+                } else {
+                    finishTest();
+                }
+            }, 2000);
+        }
+
+        function finishTest() {
+            testCompleted = true;
+            const percentage = Math.round((correctSentences / sentences.length) * 100);
+            const scoreDisplay = document.getElementById("scoreDisplay");
+            const scoreTitle = document.getElementById("scoreTitle");
+            const correctionsSection = document.getElementById("correctionsSection");
+            const correctionsList = document.getElementById("correctionsList");
+            
+            scoreTitle.innerText = `${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} Level Results`;
+            scoreDisplay.innerHTML = `
+                <strong>Your Score: ${percentage}%</strong><br>
+                (${correctSentences} out of ${sentences.length} sentences correct)
+            `;
+            
+            // Show corrections if any sentences were incorrect
+            if (incorrectSentences.length > 0) {
+                correctionsList.innerHTML = '';
+                incorrectSentences.forEach((sentence, index) => {
+                    const correctionItem = document.createElement('div');
+                    correctionItem.className = 'correction-item';
+                    correctionItem.innerHTML = `
+                        <div class="correction-text">${sentence}</div>
+                        <button class="play-correction" onclick="playSentence(${index})">▶ Play</button>
+                    `;
+                    correctionsList.appendChild(correctionItem);
+                });
+                correctionsSection.classList.remove("hidden");
+            } else {
+                correctionsSection.classList.add("hidden");
+            }
+            
+            // Unlock next level if score is 70% or higher
+            if (percentage >= 70) {
+                if (currentLevel === 'easy') {
+                    document.getElementById('mediumLevel').classList.remove('locked');
+                    scoreDisplay.innerHTML += `<br><br>🎉 Medium Level Unlocked!`;
+                } else if (currentLevel === 'medium') {
+                    document.getElementById('hardLevel').classList.remove('locked');
+                    scoreDisplay.innerHTML += `<br><br>🎉 Hard Level Unlocked!`;
+                }
+            } else {
+                document.getElementById("goToExercise").classList.remove("hidden");
+                scoreDisplay.innerHTML += `<br><br>😊 Keep practicing! You'll improve with time.`;
+            }
+            
+            document.getElementById("gameContainer").classList.add("hidden");
+            document.getElementById("scoreContainer").classList.remove("hidden");
+            updateProgress();
+        }
+
+        function playSentence(index) {
+            const utterance = new SpeechSynthesisUtterance(incorrectSentences[index]);
+            speechSynthesis.speak(utterance);
+        }
+
+        function playAllCorrections() {
+            if (incorrectSentences.length === 0) return;
+            
+            let index = 0;
+            const playNext = () => {
+                if (index < incorrectSentences.length) {
+                    const utterance = new SpeechSynthesisUtterance(incorrectSentences[index]);
+                    utterance.onend = () => {
+                        index++;
+                        setTimeout(playNext, 1000); // 1 second pause between sentences
+                    };
+                    speechSynthesis.speak(utterance);
+                }
+            };
+            playNext();
+        }
+        
+        function retryLevel() {
+            startLevel(currentLevel);
+        }
+
+        function returnToLevels() {
+            document.getElementById("gameContainer").classList.add("hidden");
+            document.getElementById("scoreContainer").classList.add("hidden");
+            document.getElementById("levelSelection").classList.remove("hidden");
+        }
+
+        // Initialize the game when page loads
+        window.onload = initializeGame;
+    </script>
+</body>
+</html>

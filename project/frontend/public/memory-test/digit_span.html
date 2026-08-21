@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digit Span Test</title>
+    <link rel="stylesheet" href="digit_span.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <h1>Digit Span Memory Test</h1><br><br>
+
+    <!-- Difficulty Selection -->
+    <div id="difficulty-selection">
+        <button onclick="selectDifficulty('easy')">Easy</button>
+        <button onclick="selectDifficulty('medium')">Medium</button>
+        <button onclick="selectDifficulty('hard')">Difficult</button>
+    </div>
+
+    <!-- Game Section (Initially Hidden) -->
+    <div id="game-section" style="display: none;">
+        <h2 id="level-title"></h2>
+        <div id="sequence-container"></div>
+
+        <div id="input-container" style="display: none;">
+            <input type="text" id="user-input" placeholder="Enter the sequence">
+            <button onclick="checkSequence()">Submit</button>
+        </div>
+
+        <button id="start-button" onclick="startTest()">Start Test</button>
+        <button id="retry-button" onclick="retryLevel()" style="display: none;">Retry</button>
+        <button id="next-button" onclick="nextLevel()" style="display: none;">Next Level</button>
+
+        <p id="result" class="result-message"></p>
+    </div>
+
+    <!-- Back to Home -->
+    <a href="index.html" class="back-link">Back to Home</a>
+
+    <script src="digit_span.js"></script>
+
+</body>
+</html>

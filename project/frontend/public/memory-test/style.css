@@ -1,0 +1,327 @@
+/* General Styles */
+body {
+    text-align: center;
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 20px;
+    background: linear-gradient(135deg, #FFDEE9, #B5FFFC);
+    color: #333;
+}
+
+/* Headings */
+h1 {
+    font-size: 32px;
+    color: #ff5733;
+    text-shadow: 2px 2px #FFD700;
+}
+
+p {
+    font-size: 20px;
+    color: #555;
+}
+
+/* Home Page Buttons */
+.test-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.test-link {
+    display: block;
+    width: 280px;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    background: linear-gradient(90deg, #FF6B6B, #FFD93D);
+    color: white;
+    border-radius: 25px;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.test-link:hover {
+    background: linear-gradient(90deg, #ff3b3b, #ffb703);
+    transform: scale(1.05);
+}
+
+/* Test Pages Container */
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Buttons */
+button {
+    margin: 12px;
+    padding: 14px 22px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(90deg, #28a745, #64dd17);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #218838, #00c853);
+    transform: scale(1.08);
+}
+
+button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+}
+
+/* Input & Textarea */
+input, textarea {
+    width: 85%;
+    padding: 12px;
+    font-size: 18px;
+    margin: 12px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+input:focus, textarea:focus {
+    border-color: #ff5733;
+    outline: none;
+}
+
+/* Word Recall Test */
+#word-list {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    margin: 20px;
+}
+
+/* Word Input Boxes */
+#word-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.word-box {
+    width: 110px;
+    padding: 12px;
+    font-size: 18px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+.word-box:focus {
+    border-color: #008cba;
+    outline: none;
+}
+
+/* Result Message */
+#result {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #333;
+}
+
+/* Back Link */
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 18px;
+    font-size: 18px;
+    text-decoration: none;
+    background: linear-gradient(90deg, #ff5252, #ff1744);
+    color: white;
+    border-radius: 25px;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    background: linear-gradient(90deg, #d50000, #ff5252);
+    transform: scale(1.05);
+}
+
+/* Pattern Recall Test Grid */
+#grid-container {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(5, 60px);
+    gap: 6px;
+    margin: 20px auto;
+    justify-content: center;
+}
+
+.cell {
+    width: 60px;
+    height: 60px;
+    background-color: #ddd;
+    border: 2px solid #999;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+/* Active pattern (shown during memorization) */
+.cell.active {
+    background-color: #ff8c00;
+}
+
+/* User-selected blocks */
+.cell.user-selected {
+    background-color: #ff4081;
+}
+
+/* Correctly recalled pattern */
+.cell.correct {
+    background-color: #4CAF50;
+}
+
+/* Incorrectly recalled pattern */
+.cell.incorrect {
+    background-color: #F44336;
+}
+
+/* Picture Memory Game Styles */
+/* Game Section */
+#game-section {
+    margin-top: 20px;
+}
+
+/* Game Container */
+#game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+/* Game Board (Grid) */
+#game-board {
+    display: grid;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    padding: 10px;
+    background: #fff3cd;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    min-height: 220px; /* Prevents collapsing */
+}
+
+/* Difficulty Levels - Grid Sizes */
+.easy #game-board {
+    grid-template-columns: repeat(2, 100px);
+    grid-template-rows: repeat(2, 100px);
+}
+
+.medium #game-board {
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: repeat(4, 100px);
+}
+
+.hard #game-board {
+    grid-template-columns: repeat(6, 80px);
+    grid-template-rows: repeat(6, 80px);
+}
+
+/* Memory Cards */
+.card {
+    width: 100px;
+    height: 100px;
+    background: #f0db4f; /* Bright yellow */
+    border-radius: 10px;
+    border: 3px solid #ff6f61;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* Hover Effect */
+.card:hover {
+    background: #ffab73;
+    transform: scale(1.1);
+}
+
+/* Flipped and Matched Cards */
+.card.flipped {
+    background: white;
+    border-color: #4caf50;
+}
+
+.card.matched {
+    background: #4caf50;
+    color: white;
+    cursor: default;
+    animation: bounce 0.5s ease;
+}
+
+/* Hidden Images */
+.card img {
+    width: 80%;
+    height: 80%;
+    display: none;
+}
+
+.card.flipped img {
+    display: block;
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Timer */
+#timer {
+    font-size: 20px;
+    font-weight: bold;
+    color: #d9534f;
+    margin-bottom: 10px;
+}
+
+/* Game Controls */
+#game-controls {
+    margin-top: 10px;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    #game-board {
+        gap: 10px;
+    }
+
+    .card {
+        width: 80px;
+        height: 80px;
+        font-size: 24px;
+    }
+
+    .medium #game-board {
+        grid-template-columns: repeat(3, 80px);
+    }
+
+    .hard #game-board {
+        grid-template-columns: repeat(5, 70px);
+    }
+}

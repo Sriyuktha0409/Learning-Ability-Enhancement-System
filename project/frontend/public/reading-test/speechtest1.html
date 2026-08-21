@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading Test</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            background-color: #f5f7fa;
+            color: #2d3748;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 90%;
+            margin: 20px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #2b6cb0;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #questionCounter {
+            font-size: 18px;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+
+        .sentence {
+            font-size: 26px;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f7fafc;
+            border-radius: 12px;
+            border-left: 5px solid #4299e1;
+            line-height: 1.6;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .correct {
+            color: #38a169;
+            font-weight: 600;
+        }
+
+        .wrong {
+            color: #e53e3e;
+            text-decoration: underline;
+        }
+
+        .button {
+            padding: 14px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            background: #4299e1;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 10px 5px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: #3182ce;
+        }
+
+        .button.secondary {
+            background: #e53e3e;
+        }
+
+        .button.secondary:hover {
+            background: #c53030;
+        }
+
+        .button.tertiary {
+            background: #38a169;
+        }
+
+        .button.tertiary:hover {
+            background: #2f855a;
+        }
+
+        #recognizedText {
+            font-size: 20px;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f7fafc;
+            border-radius: 8px;
+            min-height: 30px;
+            border-left: 3px solid #a0aec0;
+        }
+
+        #scoreDisplay {
+            font-size: 22px;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4299e1;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .listening-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-color: #e53e3e;
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: pulse 1.5s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(0.95); opacity: 1; }
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .saving-status {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #4a5568;
+        }
+        .saving-success {
+            color: #38a169;
+        }
+        .saving-error {
+            color: #e53e3e;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                width: 95%;
+            }
+            
+            .sentence {
+                font-size: 22px;
+                padding: 15px;
+            }
+            
+            .button {
+                padding: 12px 20px;
+                font-size: 16px;
+                width: 100%;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>📖 Reading Test</h2>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p id="questionCounter">Sentence 1 of 10</p>
+        <p id="sentenceDisplay" class="sentence"></p>
+        
+        <div id="recognizedText">Waiting for your speech...</div>
+        
+        <div id="feedback" class="hidden"></div>
+        
+        <div class="button-container">
+            <button id="startSpeaking" class="button" onclick="startSpeechRecognition()">
+                🎤 Start Speaking
+                <span id="listeningIndicator" class="listening-indicator hidden"></span>
+            </button>
+            <button id="skipButton" class="button secondary" onclick="skipSentence()">⏭ Skip Sentence</button>
+        </div>
+
+        <div id="resultsSection" class="hidden">
+            <p id="scoreDisplay"></p>
+            <div class="button-container">
+                <button id="replayAudio" class="button" onclick="playTestSentences()">🔊 Listen to Correct Sentences</button>
+                <button id="retryTest" class="button secondary" onclick="restartTest()">🔄 Retry Test</button>
+                <button id="goToExercise" class="button tertiary hidden" onclick="window.location.href='speecher1.html'">📚 Go to Exercises</button>
+                <div id="saveStatus" class="saving-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define your API URL directly
+        const API_URL = 'http://localhost:5000'; // Change this if your backend is hosted elsewhere
+
+        const allSentences = [
+           "I love my mom.", "The sky is blue.", "I have a pet cat.", "My school is big.", "Apples are red.",
+           "I like to play.", "Birds can fly.", "The sun is bright.", "I have a red ball.", "Dogs are friendly.",
+           "I eat my lunch.", "I see a rainbow.", "My dad drives a car.", "The grass is green.", "We go to the park.",
+           "I love ice cream.", "I wear my uniform.", "We read a book.", "My friend is kind.", "The moon is round.",
+           "Fish live in water.", "My teacher helps me.", "I can count to ten.", "The clock tells time.", "We sing songs."
+        ];
+
+        let sentences = [];
+        let currentSentenceIndex = 0;
+        let recognition = null;
+        let correctSentences = 0;
+        let testCompleted = false;
+        let testResults = {
+            sentencesAttempted: 0,
+            sentencesCorrect: 0,
+            percentage: 0,
+            timeTaken: 0,
+            startTime: 0
+        };
+
+        function initializeSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                document.getElementById("scoreDisplay").innerText = 
+                    "Speech recognition not supported in your browser. Try Chrome or Edge.";
+                return false;
+            }
+
+            recognition = new SpeechRecognition();
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.continuous = false;
+            recognition.maxAlternatives = 1;
+
+            recognition.onstart = function() {
+                document.getElementById("recognizedText").innerText = "Listening...";
+                document.getElementById("listeningIndicator").classList.remove("hidden");
+                document.getElementById("startSpeaking").disabled = true;
+            };
+
+            recognition.onresult = function(event) {
+                if (event.results[0].isFinal) {
+                    processSpeech(event.results[0][0].transcript);
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Recognition error:", event.error);
+                document.getElementById("recognizedText").innerText = 
+                    "Error: " + event.error + ". Try again.";
+                resetSpeechUI();
+            };
+
+            recognition.onend = function() {
+                resetSpeechUI();
+            };
+
+            return true;
+        }
+
+        function resetSpeechUI() {
+            document.getElementById("listeningIndicator").classList.add("hidden");
+            if (!testCompleted) {
+                document.getElementById("startSpeaking").disabled = false;
+            }
+        }
+
+        function updateProgress() {
+            const progress = ((currentSentenceIndex) / sentences.length) * 100;
+            document.getElementById("progressBar").style.width = `${progress}%`;
+        }
+
+        function startTest() {
+            currentSentenceIndex = 0;
+            correctSentences = 0;
+            testCompleted = false;
+            sentences = allSentences.sort(() => 0.5 - Math.random()).slice(0, 10);
+            testResults = {
+                sentencesAttempted: sentences.length,
+                sentencesCorrect: 0,
+                percentage: 0,
+                timeTaken: 0,
+                startTime: Date.now()
+            };
+            document.getElementById("scoreDisplay").innerText = "";
+            document.getElementById("resultsSection").classList.add("hidden");
+            document.getElementById("feedback").classList.add("hidden");
+            document.getElementById("goToExercise").classList.add("hidden");
+            document.getElementById("saveStatus").textContent = "";
+            nextSentence();
+        }
+
+        function nextSentence() {
+            if (currentSentenceIndex < sentences.length) {
+                document.getElementById("sentenceDisplay").innerText = sentences[currentSentenceIndex];
+                document.getElementById("recognizedText").innerText = "Waiting for your speech...";
+                document.getElementById("questionCounter").innerText = `Sentence ${currentSentenceIndex + 1} of ${sentences.length}`;
+                updateProgress();
+                
+                // Reset feedback UI when moving to next sentence
+                document.getElementById("feedback").classList.add("hidden");
+            } else {
+                finishTest();
+            }
+        }
+        
+        function skipSentence() {
+            // Stop any ongoing speech recognition
+            if (recognition && recognition.running) {
+                recognition.stop();
+            }
+            
+            // Reset feedback UI
+            document.getElementById("feedback").classList.add("hidden");
+            document.getElementById("recognizedText").innerText = "Sentence skipped";
+            
+            // Move to next sentence immediately
+            currentSentenceIndex++;
+            nextSentence();
+        }
+
+        function normalizeText(text) {
+            return text.toLowerCase().replace(/[.,!?]/g, '').trim();
+        }
+
+        function startSpeechRecognition() {
+            if (!recognition) {
+                alert("Speech recognition is not initialized.");
+                return;
+            }
+            recognition.start();
+        }
+
+        function processSpeech(spokenText) {
+            const displayTextElement = document.getElementById("sentenceDisplay");
+            const output = document.getElementById("recognizedText");
+            const feedbackElement = document.getElementById("feedback");
+            const originalText = normalizeText(displayTextElement.innerText);
+            
+            spokenText = normalizeText(spokenText);
+            output.innerText = spokenText;
+            
+            const isCorrect = originalText === spokenText;
+            
+            if (isCorrect) {
+                correctSentences++;
+                displayTextElement.innerHTML = `<span class='correct'>${displayTextElement.innerText}</span>`;
+                feedbackElement.textContent = "✅ Correct!";
+                feedbackElement.className = "correct";
+            } else {
+                displayTextElement.innerHTML = `<span class='wrong'>${displayTextElement.innerText}</span>`;
+                feedbackElement.textContent = "❌ Try again!";
+                feedbackElement.className = "wrong";
+            }
+            
+            feedbackElement.classList.remove("hidden");
+
+            // Move to the next sentence after a short delay
+            setTimeout(() => {
+                currentSentenceIndex++;
+                if (currentSentenceIndex < sentences.length) {
+                    nextSentence();
+                    feedbackElement.classList.add("hidden");
+                } else {
+                    finishTest();
+                }
+            }, 2000);
+        }
+
+        async function saveTestResults() {
+            const statusElement = document.getElementById("saveStatus");
+            statusElement.textContent = "Saving results...";
+            statusElement.className = "saving-status";
+            
+            try {
+                const userData = JSON.parse(sessionStorage.getItem('userData'));
+                if (!userData?.email) {
+                    throw new Error("User not logged in - cannot save results");
+                }
+
+                const testData = {
+                    email: userData.email,
+                    testType: `reading-grade${userData.grade || 1}`,
+                    score: testResults.sentencesCorrect,
+                    details: {
+                        totalQuestions: sentences.length,
+                        correctAnswers: testResults.sentencesCorrect,
+                        percentage: testResults.percentage,
+                        timeTaken: testResults.timeTaken,
+                        date: new Date().toISOString()
+                    }
+                };
+
+                const response = await fetch(`${API_URL}/api/save-test-result`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(testData),
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || "Failed to save results");
+                }
+
+                statusElement.textContent = "Results saved successfully!";
+                statusElement.className = "saving-status saving-success";
+                return data;
+            } catch (error) {
+                console.error("Error saving results:", error);
+                statusElement.textContent = `Error: ${error.message}`;
+                statusElement.className = "saving-status saving-error";
+                throw error;
+            }
+        }
+
+        async function finishTest() {
+            testCompleted = true;
+            testResults.timeTaken = Math.floor((Date.now() - testResults.startTime) / 1000); // in seconds
+            testResults.sentencesCorrect = correctSentences;
+            testResults.percentage = Math.round((correctSentences / sentences.length) * 100);
+            
+            const scoreDisplay = document.getElementById("scoreDisplay");
+            
+            scoreDisplay.innerHTML = `
+                <strong>Your Score: ${testResults.percentage}%</strong><br>
+                (${correctSentences} out of ${sentences.length} sentences correct)<br>
+                Time taken: ${formatTime(testResults.timeTaken)}
+            `;
+            
+            if (testResults.percentage >= 70) {
+                scoreDisplay.innerHTML += `<br><br>🎉 Great job! You're doing well!`;
+            } else {
+                scoreDisplay.innerHTML += `<br><br>😊 Keep practicing! You'll improve with time.`;
+                document.getElementById("goToExercise").classList.remove("hidden");
+            }
+            
+            document.getElementById("resultsSection").classList.remove("hidden");
+            document.getElementById("questionCounter").innerText = "Test Completed!";
+            updateProgress();
+            
+            // Auto-save results
+            try {
+                await saveTestResults();
+            } catch (error) {
+                console.error("Failed to save results:", error);
+            }
+            
+            // Auto-play correct sentences if score is low
+            if (testResults.percentage < 70) {
+                setTimeout(playTestSentences, 1000);
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes}m ${secs}s`;
+        }
+
+        function playTestSentences() {
+            let index = 0;
+            const sentenceElement = document.getElementById("sentenceDisplay");
+            const delay = 2000; // 2 seconds between sentences
+            
+            function speakNext() {
+                if (index >= sentences.length) return;
+                
+                sentenceElement.innerText = sentences[index];
+                let utterance = new SpeechSynthesisUtterance(sentences[index]);
+                
+                utterance.onend = function() {
+                    index++;
+                    if (index < sentences.length) {
+                        setTimeout(speakNext, delay);
+                    }
+                };
+                
+                speechSynthesis.speak(utterance);
+            }
+            
+            speakNext();
+        }
+        
+        function restartTest() {
+            startTest();
+        }
+
+        window.onload = function() {
+            if (initializeSpeechRecognition()) {
+                startTest();
+            }
+        };
+    </script>
+</body>
+</html>
