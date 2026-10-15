@@ -1,6 +1,6 @@
 # 🧠 Learning Ability Enhancement System
 
-**a.k.a. SuperLearn** — an ML-powered platform that detects potential learning disabilities in school students and helps them improve through personalized, adaptive practice.
+An ML-powered platform that detects potential learning disabilities in school students and helps them improve through personalized, adaptive practice.
 
 [![React](https://img.shields.io/badge/Frontend-React.js-61DAFB?logo=react&logoColor=white)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Backend-Node.js-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
