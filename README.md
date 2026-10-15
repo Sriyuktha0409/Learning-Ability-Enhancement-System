@@ -10,30 +10,7 @@
 
 A B.Tech capstone project from the Department of Computer Science & Engineering, JNTU-GV College of Engineering, Vizianagaram (A) — 2021–2025.
 
----
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Problem Statement](#problem-statement)
-- [Key Features](#key-features)
-- [System Architecture](#system-architecture)
-- [Machine Learning Approach](#machine-learning-approach)
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Dataset](#dataset)
-- [Core Implementation Snippets](#core-implementation-snippets)
-- [Testing](#testing)
-- [Screenshots](#screenshots)
-- [Future Scope](#future-scope)
-- [Team](#team)
-- [Acknowledgements](#acknowledgements)
-- [References](#references)
-- [License](#license)
-
----
 
 ## Overview
 
